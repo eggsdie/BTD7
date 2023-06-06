@@ -1,8 +1,124 @@
-///Users/eddiechen/eclipse-workspace/BTD7.0/src/Driver.java
-public class Driver {
-	public static void main(String[] args) {
-		System.out.println("hello");
-		System.out.print("Test");
-	}
-	
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.io.File;
+
+// class Balloon
+public class Balloon {
+    int x, y;
+    int speed;
+    int health;
+    // constructor and other methods...
+}
+
+// class Tower
+public class Tower {
+    int x, y;
+    int range;
+    int damage;
+    int cooldown;
+    // constructor and other methods...
+}
+
+// class Board
+public class Board {
+    ArrayList<Balloon> balloons;
+    ArrayList<Tower> towers;
+    // constructor and other methods...
+}
+
+// class BTD7
+public class BTD7 extends JPanel {
+    JFrame frame;
+    Board board;
+    JPanel menuScreen;
+    JButton startButton;
+    JButton settingsButton;
+    boolean running;
+    Image background;
+
+    public BTD7() {
+        frame = new JFrame("Tower Defense");
+        frame.setSize(800, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(this);
+
+        // Load background image
+        try {
+            background = ImageIO.read(new File("background.png"));  // replace with your file name
+        } catch (IOException e) {
+            System.out.println("Error loading background image.");
+            e.printStackTrace();
+        }
+
+        // Create menu screen
+        menuScreen = new JPanel();
+        menuScreen.setSize(800, 600);
+        menuScreen.setLayout(new FlowLayout());
+
+        // Create menu buttons
+        startButton = new JButton("Start");
+        settingsButton = new JButton("Settings");
+
+        // Add action listeners to buttons
+        startButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                menuScreen.setVisible(false);
+                init();
+                run();
+            }
+        });
+
+        settingsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Handle settings button click
+            }
+        });
+
+        // Add buttons to menu screen
+        menuScreen.add(startButton);
+        menuScreen.add(settingsButton);
+
+        // Add menu screen to frame
+        frame.add(menuScreen);
+
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        BTD7 game = new BTD7();
+    }
+
+    void init() {
+        board = new Board();
+        // initialize balloons and towers...
+    }
+
+    void update() {
+        // update balloons and towers...
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        // Draw background image
+        g.drawImage(background, 0, 0, this);
+
+        // draw balloons and towers...
+    }
+
+    void run() {
+        running = true;
+        while (running) {
+            update();
+            repaint();  // this will call paintComponent()
+            // wait for a short amount of time...
+        }
+    }
 }
