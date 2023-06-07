@@ -117,8 +117,7 @@ public class BTD7 extends JPanel {
         running = true;
         while (running) {
             update();
-            repaint();  // this will call paintComponent()
-            // wait for a short amount of time...
+            repaint();  
         }
     }
 }
