@@ -13,7 +13,7 @@ public class Balloon {
     int x, y;
     int speed;
     int health;
-    // constructor and other methods...
+
 }
 
 // class Tower
@@ -22,14 +22,14 @@ public class Tower {
     int range;
     int damage;
     int cooldown;
-    // constructor and other methods...
+
 }
 
 // class Board
 public class Board {
     ArrayList<Balloon> balloons;
     ArrayList<Tower> towers;
-    // constructor and other methods...
+
 }
 
 // class BTD7
@@ -48,24 +48,24 @@ public class BTD7 extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(this);
 
-        // Load background image
+
         try {
-            background = ImageIO.read(new File("background.png"));  // replace with your file name
+            background = ImageIO.read(new File("background.png"));  
         } catch (IOException e) {
             System.out.println("Error loading background image.");
             e.printStackTrace();
         }
 
-        // Create menu screen
+
         menuScreen = new JPanel();
         menuScreen.setSize(800, 600);
         menuScreen.setLayout(new FlowLayout());
 
-        // Create menu buttons
+
         startButton = new JButton("Start");
         settingsButton = new JButton("Settings");
 
-        // Add action listeners to buttons
+
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 menuScreen.setVisible(false);
@@ -96,21 +96,19 @@ public class BTD7 extends JPanel {
 
     void init() {
         board = new Board();
-        // initialize balloons and towers...
+
     }
 
     void update() {
-        // update balloons and towers...
+      
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        // Draw background image
         g.drawImage(background, 0, 0, this);
 
-        // draw balloons and towers...
+
     }
 
     void run() {
