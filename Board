@@ -5,7 +5,8 @@ public class Board {
     private int width;  // Width of the board
     private int height; // Height of the board
     private char[][] map; // 2D array representing the map
-    private List<Tower> towers; // List of towers placed on the board
+    ArrayList<Balloon> balloons;
+    ArrayList<Tower> towers;
 
     public Board(int width, int height) {
         this.width = width;
