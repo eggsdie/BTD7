@@ -25,12 +25,6 @@ public class Tower {
 
 }
 
-// class Board
-public class Board {
-    ArrayList<Balloon> balloons;
-    ArrayList<Tower> towers;
-
-}
 
 // class BTD7
 public class BTD7 extends JPanel {
