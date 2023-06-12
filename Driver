@@ -8,13 +8,7 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.io.File;
 
-// class Balloon
-public class Balloon {
-    int x, y;
-    int speed;
-    int health;
 
-}
 
 // class Tower
 public class Tower {
