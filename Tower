@@ -4,5 +4,17 @@ public class Tower {
     int range;
     int damage;
     int cooldown;
+    public Tower(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
-}
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+} 
