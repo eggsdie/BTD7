@@ -1,8 +1,65 @@
-
-// class Balloon
 public class Balloon {
-    int x, y;
-    int speed;
-    int health;
+    private int x;
+    private int y;
+    private int speed;
+    private int health;
 
+    public Balloon(int x, int y, int speed, int health) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.health = health;
+    }
+
+    public void move(List<Point> track) {
+        if (!track.isEmpty()) {
+            Point nextPoint = track.get(0);
+            int dx = nextPoint.x - x;
+            int dy = nextPoint.y - y;
+            double distance = Math.sqrt(dx * dx + dy * dy);
+            double ratio = speed / distance;
+            int newX = (int) (x + dx * ratio);
+            int newY = (int) (y + dy * ratio);
+            x = newX;
+            y = newY;
+
+            if (x == nextPoint.x && y == nextPoint.y) {
+                track.remove(0);
+            }
+        }
+    }
+
+    // Getters and setters
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }
