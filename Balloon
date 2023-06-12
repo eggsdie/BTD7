@@ -1,1 +1,8 @@
 
+// class Balloon
+public class Balloon {
+    int x, y;
+    int speed;
+    int health;
+
+}
