@@ -25,13 +25,13 @@ public class BTD7 extends JPanel {
 
     public BTD7() {
         frame = new JFrame("Tower Defense");
-        frame.setSize(800, 600);
+        frame.setSize(1250, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(this);
 
 
         try {
-            background = ImageIO.read(new File("background.png"));  
+            background = ImageIO.read(new File("Map.png"));  
         } catch (IOException e) {
             System.out.println("Error loading background image.");
             e.printStackTrace();
@@ -39,7 +39,7 @@ public class BTD7 extends JPanel {
 
 
         menuScreen = new JPanel();
-        menuScreen.setSize(800, 600);
+        menuScreen.setSize(1200, 700);
         menuScreen.setLayout(new FlowLayout());
 
 
@@ -76,7 +76,7 @@ public class BTD7 extends JPanel {
     }
 
     void init() {
-        board = new Board();
+        board = new Board(12,7);
 
     }
 
