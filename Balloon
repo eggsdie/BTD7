@@ -4,11 +4,12 @@ public class Balloon {
     private int speed;
     private int health;
 
-    public Balloon(int x, int y, int speed, int health) {
+    public Balloon(int x, int y, int speed, int health, int money) {
         this.x = x;
         this.y = y;
         this.speed = speed;
         this.health = health;
+        this.money = money;
     }
 
     public void move(List<Point> track) {
