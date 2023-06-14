@@ -22,6 +22,7 @@ public class BTD7 extends JPanel {
     JButton settingsButton;
     boolean running;
     BufferedImage background;
+    int round = 0;
 
     public BTD7() {
         frame = new JFrame("Tower Defense");
