@@ -1,8 +1,12 @@
 
 import javax.swing.*;
+
+import SUSSYROAD.State;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -23,7 +27,15 @@ public class BTD7 extends JPanel {
     boolean running;
     BufferedImage background;
     int round = 0;
-
+    
+	public static enum State{
+		Menu,
+		Game,	
+		Settings,
+		Pause,
+	};
+	public static  State state = State.Menu;
+	
     public BTD7() {
         frame = new JFrame("Tower Defense");
         frame.setSize(1250, 800);
@@ -50,9 +62,11 @@ public class BTD7 extends JPanel {
 
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	g.drawImage(background,0,0, this);
                 menuScreen.setVisible(false);
                 init();
                 run();
+                
             }
         });
 
