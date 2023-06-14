@@ -4,7 +4,8 @@ public class Tower {
     int range;
     int damage;
     int cooldown;
-    public Tower(int x, int y) {
+    String name;
+    public Tower(int x, int y, int range, int damage, String name, int cost) {
         this.x = x;
         this.y = y;
     }
