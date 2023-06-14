@@ -62,24 +62,7 @@ public class Board {
         }
     }
 
-    // Inner class representing a Tower
-    private class Tower {
-        private int x;
-        private int y;
 
-        public Tower(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-    }
 
     // Test the Board class
     public static void main(String[] args) {
