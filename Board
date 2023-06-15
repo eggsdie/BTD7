@@ -26,9 +26,9 @@ public class Board {
     }
 
     // Place a tower on the board at the specified coordinates
-    public void placeTower(int x, int y) {
+    public void placeTower(int x, int y, int range, int damage, String name, int cost) {
         if (isValidCoordinate(x, y) && !isTowerAt(x, y)) {
-            Tower tower = new Tower(x, y);
+            Tower tower = new Tower(x, y, range, damage, name, cost);
             towers.add(tower);
             map[y][x] = 'T';
             System.out.println("Tower placed at coordinates (" + x + ", " + y + ")");
@@ -69,10 +69,6 @@ public class Board {
         Board board = new Board(8, 8);
         board.displayBoard();
 
-        board.placeTower(2, 3);
-        board.placeTower(5, 6);
-        board.placeTower(2, 3); // Trying to place a tower at the same coordinates again
-
-        board.displayBoard();
+      
     }
 }
