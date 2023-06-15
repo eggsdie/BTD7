@@ -1,7 +1,4 @@
-
 import javax.swing.*;
-
-import SUSSYROAD.State;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -62,7 +59,6 @@ public class BTD7 extends JPanel {
 
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	g.drawImage(background,0,0, this);
                 menuScreen.setVisible(false);
                 init();
                 run();
