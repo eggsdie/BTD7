@@ -20,14 +20,16 @@ public class BTD7 extends JPanel {
     };
 
     State state;
-    BufferedImage background;
+    BufferedImage menuBackground;
+    BufferedImage gameBackground;
     String howToPlayText;
 
     public BTD7() {
         state = State.Menu;
 
         try {
-            background = ImageIO.read(new File("menu.png"));  
+        	gameBackground = ImageIO.read(new File("map.png"));
+            menuBackground = ImageIO.read(new File("menu.png"));  
         } catch (IOException e) {
             System.out.println("Error loading background image.");
             e.printStackTrace();
@@ -42,6 +44,7 @@ public class BTD7 extends JPanel {
                     if (e.getX() >= buttonX && e.getX() <= buttonX + BUTTON_WIDTH) {
                         if (e.getY() >= getHeight() / 2 && e.getY() <= getHeight() / 2 + BUTTON_HEIGHT) {
                             state = State.Game;
+                            
                         } else if (e.getY() >= getHeight() / 2 + BUTTON_Y_GAP && e.getY() <= getHeight() / 2 + BUTTON_Y_GAP + BUTTON_HEIGHT) {
                             state = State.Settings;
                         }
@@ -57,7 +60,7 @@ public class BTD7 extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
+        g.drawImage(menuBackground, 0, 0, this.getWidth(), this.getHeight(), this);
 
         switch (state) {
             case Menu:
@@ -66,6 +69,7 @@ public class BTD7 extends JPanel {
                 break;
 
             case Game:
+            	g.drawImage(gameBackground, 0, 0, this);
                 g2d.setColor(Color.BLUE);
                 g2d.drawString("Game", 100, 100);
                 break;
