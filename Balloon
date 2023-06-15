@@ -3,6 +3,7 @@ public class Balloon {
     private int y;
     private int speed;
     private int health;
+	private int money;
 
     public Balloon(int x, int y, int speed, int health, int money) {
         this.x = x;
@@ -12,23 +13,6 @@ public class Balloon {
         this.money = money;
     }
 
-    public void move(List<Point> track) {
-        if (!track.isEmpty()) {
-            Point nextPoint = track.get(0);
-            int dx = nextPoint.x - x;
-            int dy = nextPoint.y - y;
-            double distance = Math.sqrt(dx * dx + dy * dy);
-            double ratio = speed / distance;
-            int newX = (int) (x + dx * ratio);
-            int newY = (int) (y + dy * ratio);
-            x = newX;
-            y = newY;
-
-            if (x == nextPoint.x && y == nextPoint.y) {
-                track.remove(0);
-            }
-        }
-    }
 
     // Getters and setters
 
