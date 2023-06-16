@@ -23,6 +23,7 @@ public class BTD7 extends JPanel {
     BufferedImage menuBackground;
     BufferedImage gameBackground;
     String howToPlayText;
+    int money = 500;
 
     public BTD7() {
         state = State.Menu;
@@ -51,6 +52,12 @@ public class BTD7 extends JPanel {
                         repaint();
                     }
                 }
+                else if (state== State.Game) {
+                	if(e.getX() >= 1220 && e.getX() <=1320&&e.getY() <=150&& e.getY() >= 50) {
+                		money = money-300;
+                		
+                	}
+                }
             }
         });
     }
@@ -72,6 +79,8 @@ public class BTD7 extends JPanel {
             	g.drawImage(gameBackground, 0, 0, this);
                 g2d.setColor(Color.BLUE);
                 g2d.drawString("Game", 100, 100);
+                drawButton(g2d, "", 1220, 50, 100, 100,Color.BLUE, Color.BLUE);
+                
                 break;
 
             case Settings:
@@ -102,7 +111,7 @@ public class BTD7 extends JPanel {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Tower Defense");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1250, 800);
+        frame.setSize(1350, 739);
         BTD7 game = new BTD7();
         frame.add(game);
         frame.setVisible(true);
