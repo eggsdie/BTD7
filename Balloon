@@ -3,7 +3,7 @@ public class Balloon {
     private int y;
     private int speed;
     private int health;
-	private int money;
+    private int money;
 
     public Balloon(int x, int y, int speed, int health, int money) {
         this.x = x;
@@ -13,6 +13,36 @@ public class Balloon {
         this.money = money;
     }
 
+    public void move(Balloon b) throws InterruptedException {
+    	for(int i = 0;i<145;i++) {
+                b.setX(b.getX() + 5*b.getSpeed());
+                Thread.sleep(10);
+    	}
+        for(int a=0;a<40;a++) {
+        	b.setY(b.getY()-5*b.getSpeed());
+        	Thread.sleep(10);
+        }
+        for(int a=0;a<40;a++) {
+        	b.setX(b.getX()-5*b.getSpeed());
+        	Thread.sleep(10);
+        }
+        for(int i = 0;i<125;i++) {
+            b.setY(b.getY() + 5*b.getSpeed());
+            Thread.sleep(10);
+	}
+        for(int a=0;a<40;a++) {
+        	b.setX(b.getX()-5*b.getSpeed());
+        	Thread.sleep(10);
+        }
+        for(int a=0;a<40;a++) {
+        	b.setY(b.getY()-5*b.getSpeed());
+        	Thread.sleep(10);
+        }
+        for(int i = 0;i<165;i++) {
+            b.setX(b.getX() + 5*b.getSpeed());
+            Thread.sleep(10);
+	}
+    }
 
     // Getters and setters
 
