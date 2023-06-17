@@ -3,15 +3,23 @@ public class Tower {
     int x, y;
     int range;
     int damage;
-    int cooldown;
+    int speed;
     String name;
-    public Tower(int x, int y, int range, int damage, String name, int cost) {
+    public Tower(int x, int y, int damage, int speed) {
         this.x = x;
         this.y = y;
+        this.damage = damage;
+        this.speed =speed;
     }
 
     public int getX() {
         return x;
+    }
+    public int getdamage() {
+        return damage;
+    }
+    public int speed() {
+    	return speed;
     }
 
     public int getY() {
