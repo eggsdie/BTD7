@@ -1,49 +1,52 @@
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 public class Board {
-    private int width;  // Width of the board
-    private int height; // Height of the board
-    private char[][] map; // 2D array representing the map
+
+    private static char[][] map; // 2D array representing the map
     ArrayList<Balloon> balloons;
     ArrayList<Tower> towers;
 
     public Board(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.map = new char[height][width];
+        Board.map = new char[width][height];
         this.towers = new ArrayList<>();
         initializeMap();
     }
 
     // Initialize the map with empty tiles
     private void initializeMap() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                map[i][j] = '.';
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 12; j++) {
+                map[j][i] = '.';
             }
         }
     }
 
     // Place a tower on the board at the specified coordinates
-    public void placeTower(int x, int y, int range, int damage, String name, int cost) {
-        if (isValidCoordinate(x, y) && !isTowerAt(x, y)) {
-            Tower tower = new Tower(x, y, range, damage, name, cost);
-            towers.add(tower);
-            map[y][x] = 'T';
-            System.out.println("Tower placed at coordinates (" + x + ", " + y + ")");
-        } else {
-            System.out.println("Invalid tower placement at coordinates (" + x + ", " + y + ")");
+    public void placeTack(int x, int y, Graphics g) {
+       
+       Tower tower = new Tower(x, y, 1, 3);
+       towers.add(tower);
+            
+        map[x][y] = 'T';
+        System.out.println("Tower placed at coordinates (" + (x+1) + ", " + (y+1) + ")");
         }
-    }
-
-    // Check if the specified coordinates are valid on the board
-    private boolean isValidCoordinate(int x, int y) {
-        return x >= 0 && x < width && y >= 0 && y < height;
+   
+    
+    public void placeSniper(int x, int y,Graphics g) {
+            Tower tower = new Tower(x, y, 3, 1);
+            towers.add(tower);
+            map[x][y] = 'S';
+            System.out.println("Tower placed at coordinates (" + (x+1) + ", " + (y+1) + ")");
     }
 
     // Check if a tower already exists at the specified coordinates
-    private boolean isTowerAt(int x, int y) {
+    public boolean isTowerAt(int x, int y) {
         for (Tower tower : towers) {
             if (tower.getX() == x && tower.getY() == y) {
                 return true;
@@ -51,24 +54,76 @@ public class Board {
         }
         return false;
     }
+    public int upgradeTack(int x, int y) {
+    	for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 12; j++) {
+                if(map[j][i] =='T') {
+                	map[j][i] ='Y';
+                	return 1;
+                }
+                else if(map[j][i] =='Y') {
+                	map[j][i] ='U';
+                	return 1;
+                }
+				else if(map[j][i] =='U') {
+					map[j][i] ='I';
+					return 1;
+				}
+                
+            }
+        }
+    	return 0;
+    }
+    
+    public int upgradeSniper(int x, int y) {
+    	for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 12; j++) {
+                if(map[j][i] =='S') {
+                	map[j][i] ='D';
+                	return 1;
+                }
+                else if(map[j][i] =='D') {
+                	map[j][i] ='F';
+                	return 1;
+                }
+				else if(map[j][i] =='F') {
+					map[j][i] ='G';
+					return 1;
+				}
+                
+            }
+        }
+    	return 0;
+    }
+    public boolean isSniperAt(int x, int y) {
+    	for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 12; j++) {
+                if(map[j][i] =='S') {
+                	return true;
+                }
+            }
+        }
+    	return false;
+    }
 
     // Display the current state of the board
     public void displayBoard() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                System.out.print(map[i][j] + " ");
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 12; j++) {
+                System.out.print(map[j][i] + " ");
             }
             System.out.println();
         }
     }
 
-
+    public static char getMap(int x, int y) {
+        return map[x][y];
+    }
 
     // Test the Board class
     public static void main(String[] args) {
-        Board board = new Board(8, 8);
+        Board board = new Board(12, 7);
         board.displayBoard();
 
-      
     }
 }
