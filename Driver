@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.awt.geom.RoundRectangle2D;
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -16,21 +17,54 @@ public class BTD7 extends JPanel {
     enum State {
         Menu,
         Game,
-        Settings
+        Settings,
+        placeTack
     };
+    enum Buttons{
+    	none,
+    	placeTack,
+    	placeSniper,
+    	upgrade
+    }
 
     State state;
+    Buttons button;
     BufferedImage menuBackground;
     BufferedImage gameBackground;
+    BufferedImage tack;
+    BufferedImage tack2;
+    BufferedImage tack3;
+    BufferedImage tack4;
+    
+    BufferedImage sniper;
+    BufferedImage sniper2;
+    BufferedImage sniper3;
+    BufferedImage sniper4;
+    
+    BufferedImage red;
     String howToPlayText;
-    int money = 500;
+    int money = 2000;
+    int coordX;
+    int coordY;
+    int round = 1;
+    int lives =100;
+    boolean gameStart = false;
 
     public BTD7() {
         state = State.Menu;
-
+        Board map = new Board(12,7);
         try {
         	gameBackground = ImageIO.read(new File("map.png"));
-            menuBackground = ImageIO.read(new File("menu.png"));  
+            menuBackground = ImageIO.read(new File("menu.png"));
+            tack = ImageIO.read(new File("tack1.png"));
+            tack2 = ImageIO.read(new File("tack2.png"));
+            tack3 = ImageIO.read(new File("tack3.png"));
+            tack4 = ImageIO.read(new File("tack4.png"));
+            sniper = ImageIO.read(new File("sniper1.png"));
+            sniper2 = ImageIO.read(new File("sniper2.png"));
+            sniper3 = ImageIO.read(new File("sniper3.png"));
+            sniper4 = ImageIO.read(new File("sniper4.png"));
+            red = ImageIO.read(new File("red.png"));
         } catch (IOException e) {
             System.out.println("Error loading background image.");
             e.printStackTrace();
@@ -40,6 +74,8 @@ public class BTD7 extends JPanel {
         
         addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
+            	Graphics g = getGraphics();
+            	Graphics2D g2d = (Graphics2D) getGraphics();
                 if (state == State.Menu) {
                     int buttonX = (getWidth() - BUTTON_WIDTH) / 2;
                     if (e.getX() >= buttonX && e.getX() <= buttonX + BUTTON_WIDTH) {
@@ -54,10 +90,110 @@ public class BTD7 extends JPanel {
                 }
                 else if (state== State.Game) {
                 	if(e.getX() >= 1220 && e.getX() <=1320&&e.getY() <=150&& e.getY() >= 50) {
-                		money = money-300;
+                		if(money>=300) {
+                			button=Buttons.placeTack;
+                		}
+                		
+                	}
+                	else if(e.getX() >= 1220 && e.getX() <=1320&&e.getY() <=300&& e.getY() >= 200) {
+                		if(money>=500) {
+                			button=Buttons.placeSniper;
+                		}
+                	}
+                	else if(e.getX() >= 1220 && e.getX() <=1320&&e.getY() <=450&& e.getY() >= 350) {
+                		if(money>=300) {
+                		button = Buttons.upgrade;
+                		}
+                	}
+                }
+                
+                
+                if(button==Buttons.placeTack) {
+                	if(e.getX() >= 1220 && e.getX() <=1320&&e.getY() <=650&& e.getY() >= 550) {//cancel
+                		button=Buttons.none;
+                	}
+                	else if(e.getX() <1200){
+                		coordX = (e.getX()-3)/100+1;
+                		coordY = e.getY()/100+1;
+                		if((coordX<=8&&coordY==3)||coordX==6||(coordX==7&&coordY==1)||(coordX==8&&coordY<=2)||(coordX>=4&&coordY==5)||(coordX==4&&coordY>=6)||(coordX==5&&coordY==7)) {
+                			System.out.println("Invalid position");
+                			button = Buttons.none;
+                		}
+                		else {
+                			if(!map.isTowerAt(coordX-1, coordY-1)) {
+                				money-=300;
+                				map.placeTack(coordX-1, coordY-1, g2d);
+                    			System.out.println(coordX+","+coordY);
+                    			gameStart = true;
+                			}
+                			else {
+                				System.out.println("Invalid position");
+                				button = Buttons.none;
+                			}
+                			
+                			drawButton(g2d, "", 10, 5, 155, 30,Color.WHITE, Color.WHITE);
+                            g.setFont(new Font("Arial", Font.PLAIN, 28));
+                            g.drawString("Money:" +money, 15, 30);
+                            button = Buttons.none;
+                    		
+                		}
                 		
                 	}
                 }
+                else if(button==Buttons.placeSniper) {
+                	if(e.getX() >= 1220 && e.getX() <=1320&&e.getY() <=650&& e.getY() >= 550) {
+                		button = Buttons.none;
+                	}
+                	else if(e.getX() <1200){
+                		coordX = (e.getX()-3)/100+1;
+                		coordY = e.getY()/100+1;
+                		if((coordX<=8&&coordY==3)||coordX==6||(coordX==7&&coordY==1)||(coordX==8&&coordY<=2)||(coordX>=4&&coordY==5)||(coordX==4&&coordY>=6)||(coordX==5&&coordY==7)) {
+                			System.out.println("Invalid position");
+                			button = Buttons.none;
+                		}
+                		else {
+                			if(!map.isTowerAt(coordX-1, coordY-1)) {
+                				money-=500;
+                				map.placeSniper(coordX-1, coordY-1, g2d);
+                    			System.out.println(coordX+","+coordY);
+                    			gameStart = true;
+                			}
+                			else {
+                				System.out.println("Invalid position");
+                				button = Buttons.none;
+                			}
+                			
+                			drawButton(g2d, "", 10, 5, 155, 30,Color.WHITE, Color.WHITE);
+                            g.setFont(new Font("Arial", Font.PLAIN, 28));
+                            g.drawString("Money:" +money, 15, 30);
+                            button = Buttons.none;
+                    		
+                		}
+                		
+                	}
+                }
+                else if(button==Buttons.upgrade) {
+                	if(e.getX() >= 1220 && e.getX() <=1320&&e.getY() <=650&& e.getY() >= 550) {
+                		button = Buttons.none;
+                	}
+                	else if(e.getX() <1200){
+                		coordX = (e.getX()-3)/100+1;
+                		coordY = e.getY()/100+1;
+                		if(map.upgradeTack(coordX-1, coordY-1)==1 && money>=300) {
+                			money-=300;
+                			button=Buttons.none;
+                		}
+                		else if(map.upgradeSniper(coordX-1, coordY-1)==1 && money>=500) {
+                			money-=500;
+                			button=Buttons.none;
+                		}
+                		else {
+                			System.out.println("Invalid upgrade");
+                			button=Buttons.none;
+                		}
+                	}
+                }
+                
             }
         });
     }
@@ -67,30 +203,106 @@ public class BTD7 extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        g.drawImage(menuBackground, 0, 0, this.getWidth(), this.getHeight(), this);
-
-        switch (state) {
-            case Menu:
+        
+        	if(state==State.Menu) {
+        		g.drawImage(menuBackground, 0, 0, this.getWidth(), this.getHeight(), this);
                 drawButton(g2d, "Start", (getWidth() - BUTTON_WIDTH) / 2, getHeight() / 2, BUTTON_WIDTH, BUTTON_HEIGHT, Color.BLUE, Color.CYAN);
                 drawButton(g2d, "Settings", (getWidth() - BUTTON_WIDTH) / 2, getHeight() / 2 + BUTTON_Y_GAP, BUTTON_WIDTH, BUTTON_HEIGHT, Color.MAGENTA, Color.PINK);
-                break;
-
-            case Game:
+        	}
+        else if (state== State.Game) {
+        	
             	g.drawImage(gameBackground, 0, 0, this);
-                g2d.setColor(Color.BLUE);
-                g2d.drawString("Game", 100, 100);
+                g2d.setColor(Color.BLACK);
+                drawButton(g2d, "", 10, 5, 155, 30,Color.BLACK, Color.BLACK);
+                g.setFont(new Font("Arial", Font.PLAIN, 28));
+                g2d.drawString("Round: "+round, 1075, 25);
+                g.drawString("Money:" +money, 10, 30);
                 drawButton(g2d, "", 1220, 50, 100, 100,Color.BLUE, Color.BLUE);
+                drawButton(g2d, "", 1220, 200, 100, 100,Color.BLUE, Color.BLUE);
+                g.setFont(new Font("Arial", Font.PLAIN, 24));
+                drawButton(g2d, "", 1220, 350, 100, 100,Color.BLUE, Color.BLUE);
+                g.drawString("Upgrade", 1223, 405);
+                g.drawImage(tack, 1234, 64, this);
+                g.setColor(Color.BLACK);
+                g.drawString("$300", 1242, 170);
+                g.drawImage(sniper, 1237, 200, this);
+                g.drawString("$500", 1242, 320);
                 
-                break;
-
-            case Settings:
+        }
+        else if(state == State.Settings) {
                 g2d.setColor(Color.BLACK);
                 g2d.setFont(new Font("Arial", Font.PLAIN, 20));
                 drawString(g2d, howToPlayText, 100, 100);
-                break;
         }
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j <12; j++) {
+            	if (Board.getMap(j,i) == 'T') {
+            		drawTack(g2d, j+1, i+1);
+            	}
+            	else if (Board.getMap(j,i) == 'Y') {
+            		drawTack2(g2d, j+1, i+1);
+            	}
+            	else if (Board.getMap(j,i) == 'U') {
+            		drawTack3(g2d, j+1, i+1);
+            	}
+            	else if (Board.getMap(j,i) == 'I') {
+            		drawTack4(g2d, j+1, i+1);
+            	}
+            	else if (Board.getMap(j,i) == 'S') {
+            		drawSniper(g2d, j+1, i+1);
+            	}
+            	else if (Board.getMap(j,i) == 'D') {
+            		drawSniper2(g2d, j+1, i+1);
+            	}
+            	else if (Board.getMap(j,i) == 'F') {
+            		drawSniper3(g2d, j+1, i+1);
+            	}
+            	else if (Board.getMap(j,i) == 'G') {
+            		drawSniper4(g2d, j+1, i+1);
+            	}
+            }
+        }
+        if(button==Buttons.placeTack||button==Buttons.placeSniper||button==Buttons.upgrade) {
+        	g2d.setFont(new Font("Arial", Font.PLAIN, 12));
+            drawButton(g2d, "Cancel", 1220, 550, 100, 100, Color.gray, Color.RED);
+        }
+        if(gameStart) {
+        	int startX=5;
+        	int startY=205;
+        	for(int i=0; i<round*5;i++) {
+        		Balloon r = new Balloon(startX,startY,1,1,50);
+            	g.drawImage(red, r.getX(), r.getY(), this);
+        	}
+        	
+        }
+        repaint();
     }
-
+        
+    
+    private void drawTack(Graphics g, int x, int y) {
+    	g.drawImage(tack, x*100-85, y*100-85, this);
+    }
+    private void drawTack2(Graphics g, int x, int y) {
+    	g.drawImage(tack2, x*100-85, y*100-95, this);
+    }
+    private void drawTack3(Graphics g, int x, int y) {
+    	g.drawImage(tack3, x*100-85, y*100-85, this);
+    }
+    private void drawTack4(Graphics g, int x, int y) {
+    	g.drawImage(tack4, x*100-85, y*100-95, this);
+    }
+    private void drawSniper(Graphics g, int x, int y) {
+    	g.drawImage(sniper, x*100-80, y*100-100, this);
+    }
+    private void drawSniper2(Graphics g, int x, int y) {
+    	g.drawImage(sniper2, x*100-80, y*100-100, this);
+    }
+    private void drawSniper3(Graphics g, int x, int y) {
+    	g.drawImage(sniper3, x*100-80, y*100-100, this);
+    }
+    private void drawSniper4(Graphics g, int x, int y) {
+    	g.drawImage(sniper4, x*100-80, y*100-100, this);
+    }
     private void drawButton(Graphics2D g, String text, int x, int y, int width, int height, Color color1, Color color2) {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         GradientPaint gradient = new GradientPaint(x, y, color1, x + width / 2, y + height / 2, color2, true);
@@ -102,6 +314,7 @@ public class BTD7 extends JPanel {
         g.setColor(Color.WHITE);
         g.drawString(text, x + width / 2 - 20, y + height / 2 + 5);
     }
+
 
     private void drawString(Graphics g, String text, int x, int y) {
         for (String line : text.split("<br>"))
