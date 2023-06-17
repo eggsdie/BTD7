@@ -55,44 +55,36 @@ public class Board {
         return false;
     }
     public int upgradeTack(int x, int y) {
-    	for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 12; j++) {
-                if(map[j][i] =='T') {
-                	map[j][i] ='Y';
+                if(map[x][y] =='T') {
+                	map[x][y] ='Y';
                 	return 1;
                 }
-                else if(map[j][i] =='Y') {
-                	map[j][i] ='U';
+                else if(map[x][y] =='Y') {
+                	map[x][y] ='U';
                 	return 1;
                 }
-				else if(map[j][i] =='U') {
-					map[j][i] ='I';
+				else if(map[x][y] =='U') {
+					map[x][y] ='I';
 					return 1;
 				}
                 
-            }
-        }
     	return 0;
     }
     
     public int upgradeSniper(int x, int y) {
-    	for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 12; j++) {
-                if(map[j][i] =='S') {
-                	map[j][i] ='D';
+                if(map[x][y] =='S') {
+                	map[x][y] ='D';
                 	return 1;
                 }
-                else if(map[j][i] =='D') {
-                	map[j][i] ='F';
+                else if(map[x][y] =='D') {
+                	map[x][y] ='F';
                 	return 1;
                 }
-				else if(map[j][i] =='F') {
-					map[j][i] ='G';
+				else if(map[x][y] =='F') {
+					map[x][y] ='G';
 					return 1;
 				}
                 
-            }
-        }
     	return 0;
     }
     public boolean isSniperAt(int x, int y) {
