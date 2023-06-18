@@ -325,8 +325,8 @@ public class BTD7 extends JPanel {
         JFrame frame = new JFrame("Tower Defense");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1350, 739);
-        BTD7 game = new BTD7();
-        frame.add(game);
+        BTD7 panel = new BTD7();
+        frame.add(panel);
         frame.setVisible(true);
     }
 }
