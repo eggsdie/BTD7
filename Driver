@@ -49,6 +49,29 @@ public class BTD7 extends JPanel {
     int round = 1;
     int lives =100;
     boolean gameStart = false;
+    int speed = 1;
+    int health = 2;
+    int r1x = 5;
+    int r1y = 205;
+    int r2x;
+    int r2y;
+    int r3x;
+    int r3y;
+    int r4x;
+    int r4y;
+    int r5x;
+    int r5y;
+    int r6x;
+    int r6y;
+    int r7x;
+    int r7y;
+    int r8x;
+    int r8y;
+    int r9x;
+    int r9y;
+    int r10x;
+    int r10y;
+    Balloon one = new Balloon(r1x,r1y,speed,health, 50,"right",1);
 
     public BTD7() {
         state = State.Menu;
@@ -179,14 +202,17 @@ public class BTD7 extends JPanel {
                 	else if(e.getX() <1200){
                 		coordX = (e.getX()-3)/100+1;
                 		coordY = e.getY()/100+1;
-                		if(map.upgradeTack(coordX-1, coordY-1)==1 && money>=300) {
+                		if(map.upgradeTack(coordX-1, coordY-1)==1) {
                 			money-=300;
                 			button=Buttons.none;
                 		}
-                		else if(map.upgradeSniper(coordX-1, coordY-1)==1 && money>=500) {
-                			money-=500;
-                			button=Buttons.none;
+                		if(money>=500) {
+                			if(map.upgradeSniper(coordX-1, coordY-1)==1) {
+                    			money-=500;
+                    			button=Buttons.none;
+                    		}
                 		}
+                		
                 		else {
                 			System.out.println("Invalid upgrade");
                 			button=Buttons.none;
@@ -266,17 +292,69 @@ public class BTD7 extends JPanel {
         	g2d.setFont(new Font("Arial", Font.PLAIN, 12));
             drawButton(g2d, "Cancel", 1220, 550, 100, 100, Color.gray, Color.RED);
         }
-        if(gameStart) {
-        	int startX=5;
-        	int startY=205;
-        	for(int i=0; i<round*5;i++) {
-        		Balloon r = new Balloon(startX,startY,1,1,50);
-            	g.drawImage(red, r.getX(), r.getY(), this);
-        	}
-        	
-        }
+        drawBalloon(one, g);
+        
+        
         repaint();
     }
+    public void move(Balloon b) throws InterruptedException {
+    	if(b.getDirection()=="right") {
+    		b.setX(b.getX()+b.getSpeed()*round);
+    		Thread.sleep(10);
+    	}
+    	else if(b.getDirection()=="left") {
+    		b.setX(b.getX()-b.getSpeed()*round);
+    		Thread.sleep(10);
+    	}
+    	else if(b.getDirection()=="up") {
+    		b.setY(b.getY()-b.getSpeed()*round);
+    		Thread.sleep(10);
+    	}
+    	else if(b.getDirection()=="down") {
+    		b.setY(b.getY()+b.getSpeed()*round);
+    		Thread.sleep(10);
+    	}
+    }
+    public void drawBalloon(Balloon b, Graphics g) {
+    	if(gameStart) {
+    		try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		if(b.getX()>725&&b.getX()<800&&b.getY()>200&&b.getY()<300) {
+    			b.setDirection("up");
+    		}
+    		else if(b.getX()>725&&b.getX()<800&&b.getY()>0&&b.getY()<100) {
+    			b.setDirection("left");
+    		}
+    		else if(b.getX()>725&&b.getX()<800&&b.getY()>0&&b.getY()<100) {
+    			b.setDirection("left");
+    		}
+    		else if(b.getX()>425&&b.getX()<500&&b.getY()>0&&b.getY()<100) {
+    			b.setDirection("down");
+    		}
+    		if(b.getDirection()=="right") {
+    			g.drawImage(red,one.getX()+speed*round,one.getY(), this);
+    			
+    		}
+    		else if(b.getDirection()=="left") {
+    			g.drawImage(red,one.getX()-speed*round,one.getY(), this);
+    			
+    		}
+    		else if(b.getDirection()=="up") {
+    			g.drawImage(red,one.getX(),one.getY()-speed*round, this);
+    			
+    		}
+    		else if(b.getDirection()=="down") {
+    			g.drawImage(red,one.getX(),one.getY()+speed*round, this);
+    			
+    		}
+        	
+        }
+    	
+    	}
         
     
     private void drawTack(Graphics g, int x, int y) {
