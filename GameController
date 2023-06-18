@@ -1,0 +1,101 @@
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+public class GameController {
+    private int lives;
+    private int score;
+    private int round;
+    private Board board;
+    private List<Balloon> balloons;
+
+    public GameController(Board board) {
+        this.board = board;
+        this.lives = 20;
+        this.score = 0;
+        this.round = 0;
+        this.balloons = new ArrayList<>();
+    }
+
+    public boolean isGameOver() {
+        return this.lives <= 0;
+    }
+
+    public void startRound() throws InterruptedException {
+        // Increment the round count each time this function is called
+        this.round++;
+        // Each round has an increasing number of balloons and their health is the round number
+        for (int i = 0; i < round; i++) {
+            Balloon b = new Balloon(0, 0, 1, round, round);
+            balloons.add(b);
+            System.out.println("New balloon created at (0,0) with health " + round);
+        }
+
+        // Creating a new list to avoid ConcurrentModificationException
+        List<Balloon> balloonsToMove = new ArrayList<>(balloons);
+        for (Balloon b : balloonsToMove) {
+            b.followPath();
+            System.out.println("Balloon moved to (" + b.getX() + "," + b.getY() + ")");
+
+            // Updated condition based on the given path
+            if (b.getX() >= 19 && b.getY() == 3) {
+                decrementLives(1);
+                System.out.println("Balloon reached the end! Lives remaining: " + getLives());
+                // Removing balloon from the original list as it reached the end
+                balloons.remove(b);
+            }
+        }
+        for (int i = 0; i < round; i++) {
+            Balloon b = new Balloon(0, 0, 1, round, round);
+            balloons.add(b);
+
+            new Thread(b).start();  // start a new thread for each balloon
+        }
+    }
+
+    public void decrementLives(int decrementBy) {
+        this.lives -= decrementBy;
+    }
+
+    public int getLives() {
+        return this.lives;
+    }
+    public List<Balloon> getBalloons() {
+        return balloons;
+    }
+    public static void main(String[] args) {
+        Board board = new Board(12, 7);
+        GameController game = new GameController(board);
+        GamePanel gamePanel = new GamePanel(game.getBalloons());
+
+        JFrame frame = new JFrame("Balloon Game");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(gamePanel);
+        frame.setSize(400, 400);
+        frame.setVisible(true);
+
+        Timer timer = new Timer(100, new ActionListener() {  // 100ms delay
+            int roundNumber = 1;
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (game.isGameOver()) {
+                    ((Timer)e.getSource()).stop();
+                    System.out.println("Game Over. Survived until round " + roundNumber);
+                } else {
+                    System.out.println("Starting round " + roundNumber);
+                    try {
+                        game.startRound();
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                    roundNumber++;
+                    gamePanel.repaint();
+                }
+            }
+        });
+        timer.start();
+    }
+}
