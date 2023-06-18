@@ -1,4 +1,4 @@
-public class Balloon {
+public class Balloon implements Runnable {
     private int x;
     private int y;
     private int speed;
@@ -11,41 +11,69 @@ public class Balloon {
         this.speed = speed;
         this.health = health;
         this.money = money;
+        try {
+            this.followPath();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    private String nextMove;  // add this field
+
+
+    // ...
+
+    public void move() throws InterruptedException {
+        switch (nextMove) {
+            case "right":
+                moveRight(1);
+                // logic to update nextMove based on the current position and path...
+                break;
+            case "up":
+                moveUp(1);
+                // logic to update nextMove...
+                break;
+            // handle other directions...
+        }
+    }
+    public void followPath() throws InterruptedException {
+        this.moveRight(7);
+        this.moveUp(2);
+        this.moveLeft(2);
+        this.moveDown(6);
+        this.moveLeft(2);
+        this.moveUp(2);
+        this.moveRight(8);
+        // Balloon has reached the end
+    }
+    // Implement these methods. Modify the logic as needed, consider the balloon's speed
+    private void moveRight(int steps) throws InterruptedException {
+        for (int i = 0; i < steps; i++) {
+            this.x++;
+            System.out.println("Moving right to: " + this.x + ", " + this.y);
+            Thread.sleep(10 * this.speed);
+        }
     }
 
-    public void move(Balloon b) throws InterruptedException {
-    	for(int i = 0;i<145;i++) {
-                b.setX(b.getX() + 5*b.getSpeed());
-                Thread.sleep(10);
-    	}
-        for(int a=0;a<40;a++) {
-        	b.setY(b.getY()-5*b.getSpeed());
-        	Thread.sleep(10);
+    private void moveUp(int steps) throws InterruptedException {
+        for (int i = 0; i < steps; i++) {
+            this.y--;
+            Thread.sleep(10 * this.speed);
         }
-        for(int a=0;a<40;a++) {
-        	b.setX(b.getX()-5*b.getSpeed());
-        	Thread.sleep(10);
-        }
-        for(int i = 0;i<125;i++) {
-            b.setY(b.getY() + 5*b.getSpeed());
-            Thread.sleep(10);
-	}
-        for(int a=0;a<40;a++) {
-        	b.setX(b.getX()-5*b.getSpeed());
-        	Thread.sleep(10);
-        }
-        for(int a=0;a<40;a++) {
-        	b.setY(b.getY()-5*b.getSpeed());
-        	Thread.sleep(10);
-        }
-        for(int i = 0;i<165;i++) {
-            b.setX(b.getX() + 5*b.getSpeed());
-            Thread.sleep(10);
-	}
     }
 
-    // Getters and setters
+    private void moveLeft(int steps) throws InterruptedException {
+        for (int i = 0; i < steps; i++) {
+            this.x--;
+            Thread.sleep(10 * this.speed);
+        }
+    }
 
+    private void moveDown(int steps) throws InterruptedException {
+        for (int i = 0; i < steps; i++) {
+            this.y++;
+            Thread.sleep(10 * this.speed);
+        }
+    }
     public int getX() {
         return x;
     }
@@ -76,5 +104,34 @@ public class Balloon {
 
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+    public void run() {
+        try {
+            while (true) {
+                move();
+                Thread.sleep(10 * this.speed);  // pause after each step
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Balloon{" +
+                "x=" + x +
+                ", y=" + y +
+                ", speed=" + speed +
+                ", health=" + health +
+                ", money=" + money +
+                '}';
     }
 }
