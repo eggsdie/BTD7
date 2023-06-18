@@ -14,6 +14,7 @@ public class Balloon {
         this.health = health;
         this.money = money;
         this.position = position;
+        this.direction=direction;
     }
 
     
