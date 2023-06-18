@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -51,27 +52,8 @@ public class BTD7 extends JPanel {
     boolean gameStart = false;
     int speed = 1;
     int health = 2;
-    int r1x = 5;
-    int r1y = 205;
-    int r2x;
-    int r2y;
-    int r3x;
-    int r3y;
-    int r4x;
-    int r4y;
-    int r5x;
-    int r5y;
-    int r6x;
-    int r6y;
-    int r7x;
-    int r7y;
-    int r8x;
-    int r8y;
-    int r9x;
-    int r9y;
-    int r10x;
-    int r10y;
-    Balloon one = new Balloon(r1x,r1y,speed,health, 50,"right",1);
+
+    Balloon one = new Balloon(5,205,speed,health, 50,"right",1);
 
     public BTD7() {
         state = State.Menu;
@@ -220,8 +202,22 @@ public class BTD7 extends JPanel {
                 	}
                 }
                 
+
             }
         });
+    }
+    public void actionPerformed(ActionEvent e, Graphics g) {
+        // This method is called by the Timer object at regular intervals
+        // You can update the game state and perform any necessary computations here
+        // For example, you can call the move method here
+
+        try {
+            move(one,g); // Call the move method
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+
+        repaint(); // Redraw the game screen
     }
 
     @Override
@@ -292,69 +288,53 @@ public class BTD7 extends JPanel {
         	g2d.setFont(new Font("Arial", Font.PLAIN, 12));
             drawButton(g2d, "Cancel", 1220, 550, 100, 100, Color.gray, Color.RED);
         }
-        drawBalloon(one, g);
         
+        try {
+			move(one,g);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         repaint();
     }
-    public void move(Balloon b) throws InterruptedException {
+    private void move(Balloon b, Graphics g) throws InterruptedException {
     	if(b.getDirection()=="right") {
     		b.setX(b.getX()+b.getSpeed()*round);
+    		g.drawImage(red,one.getX(),one.getY(), this);
+    		System.out.print(b.getX()+" " +b.getY());
     		Thread.sleep(10);
     	}
     	else if(b.getDirection()=="left") {
     		b.setX(b.getX()-b.getSpeed()*round);
+    		g.drawImage(red,one.getX(),one.getY(), this);
     		Thread.sleep(10);
     	}
     	else if(b.getDirection()=="up") {
     		b.setY(b.getY()-b.getSpeed()*round);
+    		g.drawImage(red,one.getX(),one.getY(), this);
     		Thread.sleep(10);
     	}
     	else if(b.getDirection()=="down") {
     		b.setY(b.getY()+b.getSpeed()*round);
+    		g.drawImage(red,one.getX(),one.getY(), this);
     		Thread.sleep(10);
     	}
+    	if(b.getX()>725&&b.getX()<800&&b.getY()>200&&b.getY()<300) {
+			b.setDirection("up");
+		}
+		else if(b.getX()>725&&b.getX()<800&&b.getY()>0&&b.getY()<100) {
+			b.setDirection("left");
+		}
+		
+		else if(b.getX()>425&&b.getX()<500&&b.getY()>0&&b.getY()<100) {
+			b.setDirection("down");
+		}
+		else if(b.getX()>325&&b.getX()<400&&b.getY()>625&&b.getY()<700) {
+			b.setDirection("right");
+		}
     }
-    public void drawBalloon(Balloon b, Graphics g) {
-    	if(gameStart) {
-    		try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    		if(b.getX()>725&&b.getX()<800&&b.getY()>200&&b.getY()<300) {
-    			b.setDirection("up");
-    		}
-    		else if(b.getX()>725&&b.getX()<800&&b.getY()>0&&b.getY()<100) {
-    			b.setDirection("left");
-    		}
-    		else if(b.getX()>725&&b.getX()<800&&b.getY()>0&&b.getY()<100) {
-    			b.setDirection("left");
-    		}
-    		else if(b.getX()>425&&b.getX()<500&&b.getY()>0&&b.getY()<100) {
-    			b.setDirection("down");
-    		}
-    		if(b.getDirection()=="right") {
-    			g.drawImage(red,one.getX()+speed*round,one.getY(), this);
-    			
-    		}
-    		else if(b.getDirection()=="left") {
-    			g.drawImage(red,one.getX()-speed*round,one.getY(), this);
-    			
-    		}
-    		else if(b.getDirection()=="up") {
-    			g.drawImage(red,one.getX(),one.getY()-speed*round, this);
-    			
-    		}
-    		else if(b.getDirection()=="down") {
-    			g.drawImage(red,one.getX(),one.getY()+speed*round, this);
-    			
-    		}
-        	
-        }
-    	
-    	}
+
         
     
     private void drawTack(Graphics g, int x, int y) {
@@ -402,7 +382,7 @@ public class BTD7 extends JPanel {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Tower Defense");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1350, 739);
+        frame.setSize(1350, 727);
         BTD7 panel = new BTD7();
         frame.add(panel);
         frame.setVisible(true);
