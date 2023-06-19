@@ -52,16 +52,16 @@ public class BTD7 extends JPanel {
     int lives =100;
     boolean gameStart = false;
     
-    static Balloon one = new Balloon(5,205,2,2, 50,"right");
-    static Balloon two = new Balloon(-20,205,2,2, 50,"right");
-    static Balloon three = new Balloon(-45,205,2,2, 50,"right");
-    static Balloon four = new Balloon(-70,205,2,2, 50,"right");
-    static Balloon five = new Balloon(-95,205,2,2, 50,"right");
-    static Balloon six = new Balloon(-120,205,2,2, 50,"right");
-    static Balloon seven = new Balloon(-145,205,2,2, 50,"right");
-    static Balloon eight = new Balloon(-170,205,2,2, 50,"right");
-    static Balloon nine = new Balloon(-195,205,2,2, 50,"right");
-    static Balloon ten = new Balloon(-225,205,1,10, 50,"right");
+    static Balloon one = new Balloon(5,205,2,5, 50,"right");
+    static Balloon two = new Balloon(-20,205,2,5, 50,"right");
+    static Balloon three = new Balloon(-45,205,2,5, 50,"right");
+    static Balloon four = new Balloon(-70,205,2,5, 50,"right");
+    static Balloon five = new Balloon(-95,205,2,5, 50,"right");
+    static Balloon six = new Balloon(-120,205,2,5, 50,"right");
+    static Balloon seven = new Balloon(-145,205,2,5, 50,"right");
+    static Balloon eight = new Balloon(-170,205,2,5, 50,"right");
+    static Balloon nine = new Balloon(-195,205,2,5, 50,"right");
+    static Balloon ten = new Balloon(-225,205,1,25, 150,"right");
     static ArrayList<Balloon> bList = new ArrayList<>();{
 	    bList.add(one);
 	    bList.add(two);
