@@ -9,6 +9,7 @@ import java.awt.geom.RoundRectangle2D;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class BTD7 extends JPanel {
     private static final int BUTTON_WIDTH = 200;
@@ -19,7 +20,7 @@ public class BTD7 extends JPanel {
         Menu,
         Game,
         Settings,
-        placeTack
+        GameOver
     };
     enum Buttons{
     	none,
@@ -27,7 +28,7 @@ public class BTD7 extends JPanel {
     	placeSniper,
     	upgrade
     }
-
+    
     State state;
     Buttons button;
     BufferedImage menuBackground;
@@ -50,11 +51,29 @@ public class BTD7 extends JPanel {
     int round = 1;
     int lives =100;
     boolean gameStart = false;
-    int speed = 1;
-    int health = 2;
-
-    Balloon one = new Balloon(5,205,speed,health, 50,"right",1);
-
+    
+    static Balloon one = new Balloon(5,205,2,2, 50,"right");
+    static Balloon two = new Balloon(-20,205,2,2, 50,"right");
+    static Balloon three = new Balloon(-45,205,2,2, 50,"right");
+    static Balloon four = new Balloon(-70,205,2,2, 50,"right");
+    static Balloon five = new Balloon(-95,205,2,2, 50,"right");
+    static Balloon six = new Balloon(-120,205,2,2, 50,"right");
+    static Balloon seven = new Balloon(-145,205,2,2, 50,"right");
+    static Balloon eight = new Balloon(-170,205,2,2, 50,"right");
+    static Balloon nine = new Balloon(-195,205,2,2, 50,"right");
+    static Balloon ten = new Balloon(-225,205,1,10, 50,"right");
+    static ArrayList<Balloon> bList = new ArrayList<>();{
+	    bList.add(one);
+	    bList.add(two);
+	    bList.add(three);
+	    bList.add(four);
+	    bList.add(five);
+	    bList.add(six);
+	    bList.add(seven);
+	    bList.add(eight);
+	    bList.add(nine);
+	    bList.add(ten);
+    }
     public BTD7() {
         state = State.Menu;
         Board map = new Board(12,7);
@@ -224,7 +243,8 @@ public class BTD7 extends JPanel {
                 g2d.setColor(Color.BLACK);
                 drawButton(g2d, "", 10, 5, 155, 30,Color.BLACK, Color.BLACK);
                 g.setFont(new Font("Arial", Font.PLAIN, 28));
-                g2d.drawString("Round: "+round, 1075, 25);
+                g2d.drawString("Round: "+round, 1085, 30);
+                g2d.drawString("Lives: "+lives, 1070, 55);
                 g.drawString("Money:" +money, 10, 30);
                 drawButton(g2d, "", 1220, 50, 100, 100,Color.BLUE, Color.BLUE);
                 drawButton(g2d, "", 1220, 200, 100, 100,Color.BLUE, Color.BLUE);
@@ -275,61 +295,61 @@ public class BTD7 extends JPanel {
         	g2d.setFont(new Font("Arial", Font.PLAIN, 12));
             drawButton(g2d, "Cancel", 1220, 550, 100, 100, Color.gray, Color.RED);
         }
+        
         if(gameStart==true) {
-        	g.drawImage(red,one.getX(),one.getY(), this);
-        	move(one,g);
+        	for(Balloon b:bList) {
+        		move(b,g);
+        	}
         }
-        
-        
+        	
         repaint();
     }
     public void move(Balloon b, Graphics g){
-    	
-    	try
-		{	
-			Thread.sleep(15);//Pauses every 15 seconds
-			System.out.println(b.getX()+" "+b.getY());
-			if(b.getDirection().equals("right")) {
-				System.out.println("LOL");
-	    		b.setX(b.getX()+round+1);
-	    		
-	    		System.out.print(b.getX()+" " +b.getY());
-			}
-	    	else if(b.getDirection().equals("left")) {
-	    		b.setX(b.getX()-b.getSpeed()*round-1);
-	    		
-	    		
-	    	}
-	    	else if(b.getDirection().equals("up")) {
-	    		b.setY(b.getY()-b.getSpeed()*round-1);
-	    		
-	    		
-	    	}
-	    	else if(b.getDirection().equals("down")) {
-	    		b.setY(b.getY()+b.getSpeed()*round+1);
-	    		
-	    		
-	    	}
-	    	if(b.getX()>725&&b.getX()<800&&b.getY()>200&&b.getY()<300) {
-				b.setDirection("up");
-			}
-			else if(b.getX()>725&&b.getX()<800&&b.getY()>0&&b.getY()<25) {
-				b.setDirection("left");
-			}
-			
-			else if(b.getX()>425&&b.getX()<475&&b.getY()>0&&b.getY()<100) {
-				b.setDirection("down");
-			}
-			else if(b.getX()>325&&b.getX()<400&&b.getY()>625&&b.getY()<700) {
-				b.setDirection("right");
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-    	
-    }
+    		if(b.getHealth()>0) {
+    			try {
+					Thread.sleep(1);
+					g.drawImage(red,one.getX(),one.getY(), this);
+    				if(b.getDirection().equals("right")) {
+    		    		b.setX(b.getX()+round+b.getSpeed());
+    				}
+    		    	else if(b.getDirection().equals("left")) {
+    		    		b.setX(b.getX()-b.getSpeed()-round); 		
+    		    	}
+    		    	else if(b.getDirection().equals("up")) {
+    		    		b.setY(b.getY()-b.getSpeed()-round);
+    		    	}
+    		    	else if(b.getDirection().equals("down")) {
+    		    		b.setY(b.getY()+b.getSpeed()+round);
+    		    	}
+    		    	if(b.getX()>715&&b.getX()<800&&b.getY()>200&&b.getY()<300) {
+    					b.setDirection("up");
+    				}
+    				else if(b.getX()>715&&b.getX()<800&&b.getY()>0&&b.getY()<5) {
+    					b.setDirection("left");
+    				}
+    				else if(b.getX()>475&&b.getX()<520&&b.getY()>0&&b.getY()<100) {
+    					b.setDirection("down");
+    				}
+    				else if(b.getX()>475&&b.getX()<520&&b.getY()>605&&b.getY()<700) {
+    					b.setDirection("left");
+    				}
+    				else if(b.getX()>275&&b.getX()<320&&b.getY()>600&&b.getY()<700) {
+    					b.setDirection("up");
+    				}
+    				else if(b.getX()>275&&b.getX()<320&&b.getY()>300&&b.getY()<410) {
+    					b.setDirection("right");
+    				}
+    				else if(b.getX()>1150) {
+    					b.setY(800);
+    					lives-=b.getHealth();
+    				}
+    				
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    		}
+    	}
 
         
     
@@ -376,9 +396,11 @@ public class BTD7 extends JPanel {
     }
 
     public static void main(String[] args) {
+    	
+        
         JFrame frame = new JFrame("Tower Defense");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1350, 727);
+        frame.setSize(1350, 738);
         BTD7 panel = new BTD7();
         frame.add(panel);
         frame.setVisible(true);
