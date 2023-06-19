@@ -296,19 +296,21 @@ public class BTD7 extends JPanel {
             drawButton(g2d, "Cancel", 1220, 550, 100, 100, Color.gray, Color.RED);
         }
         
+
         if(gameStart==true) {
-        	for(Balloon b:bList) {
-        		move(b,g);
+        	for(int i = 0; i < bList.size(); i++) {
+        		move(bList.get(i), g);
         	}
         }
-        	
+        
+       
         repaint();
     }
     public void move(Balloon b, Graphics g){
     		if(b.getHealth()>0) {
     			try {
 					Thread.sleep(1);
-					g.drawImage(red,one.getX(),one.getY(), this);
+					g.drawImage(red,b.getX(),b.getY(), this);
     				if(b.getDirection().equals("right")) {
     		    		b.setX(b.getX()+round+b.getSpeed());
     				}
