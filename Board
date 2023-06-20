@@ -98,6 +98,8 @@ public class Board {
     	return false;
     }
     public boolean checkBalloonProximity(int balloonX, int balloonY) {
+    	balloonX = (balloonX-3)/100+1;
+    	balloonY = (balloonY/100)+1;
         // Check the 8 surrounding squares for towers
         for (int x = Math.max(0, balloonX - 1); x <= Math.min(11, balloonX + 1); x++) {
             for (int y = Math.max(0, balloonY - 1); y <= Math.min(6, balloonY + 1); y++) {
