@@ -182,6 +182,7 @@ public class BTD7 extends JPanel {
                 			if(!map.isTowerAt(coordX-1, coordY-1)) {
                 				money-=500;
                 				map.placeSniper(coordX-1, coordY-1, g2d);
+                				
                     			System.out.println(coordX+","+coordY);
                     			gameStart = true;
                 			}
@@ -235,6 +236,7 @@ public class BTD7 extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         if(lives <= 0) {
             g2d.setColor(Color.BLACK);
+            state=State.GameOver;
             g2d.setFont(new Font("Arial", Font.BOLD, 50));
             g2d.drawString("Game Over", getWidth()/2 - 100, getHeight()/2);
             return;
@@ -334,10 +336,7 @@ public class BTD7 extends JPanel {
                 int balloonX = b.getX();
                 int balloonY = b.getY();
                 System.out.println("Coords:"+balloonX+","+balloonY);
-                if(board.isTowerAt(balloonX-100, balloonY) ||
-                   board.isTowerAt(balloonX+100, balloonY) ||
-                   board.isTowerAt(balloonX, balloonY-100) ||
-                   board.isTowerAt(balloonX, balloonY+100)) {
+                if(checkBalloonProximity(balloonX,balloonY)) {
                 	System.out.println("pop");
                     b.setHealth(b.getHealth() - 1);
                     if (b.getHealth() <= 0) {
@@ -396,7 +395,9 @@ public class BTD7 extends JPanel {
 
         
     
-    private void drawTack(Graphics g, int x, int y) {
+
+
+	private void drawTack(Graphics g, int x, int y) {
     	g.drawImage(tack, x*100-85, y*100-85, this);
     }
     private void drawTack2(Graphics g, int x, int y) {
