@@ -97,7 +97,20 @@ public class Board {
         }
     	return false;
     }
+    public boolean checkBalloonProximity(int balloonX, int balloonY) {
+        // Check the 8 surrounding squares for towers
+        for (int x = Math.max(0, balloonX - 1); x <= Math.min(11, balloonX + 1); x++) {
+            for (int y = Math.max(0, balloonY - 1); y <= Math.min(6, balloonY + 1); y++) {
+                // If there is a tower here, return true
+                if (map[x][y] == 'T' || map[x][y] == 'S' || map[x][y] == 'Y' || map[x][y] == 'U' || map[x][y] == 'I' || map[x][y] == 'D' || map[x][y] == 'F' || map[x][y] == 'G') {
+                    return true;
+                }
+            }
+        }
 
+        // No tower in proximity
+        return false;
+    }
     // Display the current state of the board
     public void displayBoard() {
         for (int i = 0; i < 7; i++) {
