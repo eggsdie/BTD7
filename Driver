@@ -352,20 +352,20 @@ public class BTD7 extends JPanel {
                 		}
             		}
                 }
-                if(snipers().length()!=0&&time%100==0) {
+                if(snipers().length()!=0&&time%200==0) {
                 	System.out.println("SNIPER pop");
                 	for(int i=0;i<(snipers().length());i++){
                 		if(snipers().charAt(i)=='S') {
-                			bList.get(0).setHealth(b.getHealth() - 5);
+                			b.setHealth(b.getHealth() - 5);
                 		}
                 		else if(snipers().charAt(i)=='D') {
-                			bList.get(0).setHealth(b.getHealth() - 10);
+                			b.setHealth(b.getHealth() - 10);
                 		}
                 		else if(snipers().charAt(i)=='F') {
-                			bList.get(0).setHealth(b.getHealth() - 20);
+                			b.setHealth(b.getHealth() - 20);
                 		}
                 		else if(snipers().charAt(i)=='G') {
-                			bList.get(0).setHealth(b.getHealth() - 40);
+                			b.setHealth(b.getHealth() - 40);
                 		}
                 	}
                 }
