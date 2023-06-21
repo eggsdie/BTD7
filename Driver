@@ -52,17 +52,18 @@ public class BTD7 extends JPanel {
     int coordY;
     int round = 1;
     int lives =100;
+    int time=0;
     boolean gameStart = false;
     public Board map;
-    static Balloon one = new Balloon(5,205,2,5, 50,"right");
-    static Balloon two = new Balloon(-20,205,2,5, 50,"right");
-    static Balloon three = new Balloon(-45,205,2,5, 50,"right");
-    static Balloon four = new Balloon(-70,205,2,5, 50,"right");
-    static Balloon five = new Balloon(-95,205,2,5, 50,"right");
-    static Balloon six = new Balloon(-120,205,2,5, 50,"right");
-    static Balloon seven = new Balloon(-145,205,2,5, 50,"right");
-    static Balloon eight = new Balloon(-170,205,2,5, 50,"right");
-    static Balloon nine = new Balloon(-195,205,2,5, 50,"right");
+    static Balloon one = new Balloon(5,205,2,10, 50,"right");
+    static Balloon two = new Balloon(-20,205,2,10, 50,"right");
+    static Balloon three = new Balloon(-45,205,2,10, 50,"right");
+    static Balloon four = new Balloon(-70,205,2,10, 50,"right");
+    static Balloon five = new Balloon(-95,205,2,10, 50,"right");
+    static Balloon six = new Balloon(-120,205,2,10, 50,"right");
+    static Balloon seven = new Balloon(-145,205,2,10, 50,"right");
+    static Balloon eight = new Balloon(-170,205,2,10, 50,"right");
+    static Balloon nine = new Balloon(-195,205,2,10, 50,"right");
     static Balloon ten = new Balloon(-225,205,1,25, 150,"right");
     static ArrayList<Balloon> bList = new ArrayList<>();{
 	    bList.add(one);
@@ -308,9 +309,7 @@ public class BTD7 extends JPanel {
         
 
         if(gameStart==true) {
-        	for(int i = 0; i < bList.size(); i++) {
-        		move(bList.get(i), map, g);
-        	}
+
         	Iterator<Balloon> it = bList.iterator();
         	while (it.hasNext()) {
         	    Balloon b = it.next();
@@ -330,19 +329,52 @@ public class BTD7 extends JPanel {
 
         if(b.getHealth() > 0) {
             try {
-                Thread.sleep(1);
+                Thread.sleep(11-bList.size());
+                time+=1;
                 g.drawImage(red, b.getX(), b.getY(), this);
 
                 int balloonX = b.getX();
                 int balloonY = b.getY();
-                System.out.println("Coords:"+balloonX+","+balloonY);
-                if(checkBalloonProximity(balloonX,balloonY)) {
-                	System.out.println("pop");
-                    b.setHealth(b.getHealth() - 1);
+                if(checkProximity(balloonX,balloonY).length()!=0) {
+                	System.out.println("TACK pop");
+                	for(int i=0;i<(checkProximity(balloonX,balloonY).length());i++){
+                		if(checkProximity(balloonX,balloonY).charAt(i)=='T'){
+                			b.setHealth(b.getHealth() - 1);
+                		}
+                		else if(checkProximity(balloonX,balloonY).charAt(i)=='Y'){
+                    			b.setHealth(b.getHealth() - 2);
+                    		
+                		}else if(checkProximity(balloonX,balloonY).charAt(i)=='U'){
+                			b.setHealth(b.getHealth() - 3);
+                		}
+                		else if(checkProximity(balloonX,balloonY).charAt(i)=='I'){
+                			b.setHealth(b.getHealth() - 4);
+                		}
+            		}
+                }
+                if(snipers().length()!=0&&time%100==0) {
+                	System.out.println("SNIPER pop");
+                	for(int i=0;i<(snipers().length());i++){
+                		if(snipers().charAt(i)=='S') {
+                			bList.get(0).setHealth(b.getHealth() - 5);
+                		}
+                		else if(snipers().charAt(i)=='D') {
+                			bList.get(0).setHealth(b.getHealth() - 10);
+                		}
+                		else if(snipers().charAt(i)=='F') {
+                			bList.get(0).setHealth(b.getHealth() - 20);
+                		}
+                		else if(snipers().charAt(i)=='G') {
+                			bList.get(0).setHealth(b.getHealth() - 40);
+                		}
+                	}
+                }
+                	
+                    
                     if (b.getHealth() <= 0) {
+                    	money+=50;
                         return;
                     }
-                }
 
                 // Your existing direction change logic starts here
 
@@ -389,11 +421,53 @@ public class BTD7 extends JPanel {
                 e.printStackTrace();
             }
         }
+
     }
 
+    public String snipers() {
+    	String s = "";
+    	for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 12; j++) {
+            	if (Board.getMap(j,i)=='S') {
+            		s+="S";
+            	}
+            	else if(Board.getMap(j,i)=='D') {
+            		s+="D";
+            	}
+            	else if(Board.getMap(j,i)=='F') {
+            		s+="F";
+            	}
+            	else if(Board.getMap(j,i)=='G') {
+            		s+="G";
+            	}
+            }    
+    }
+    	return s;
+    }
 
+    public String checkProximity(int x, int y) {
+    	String s = "";
+    	x = ((x-3)/100)+1;
+    	y = (y/100)+1;
+        // Check the 8 surrounding squares for towers
+    	if(x>0&&y>0&&y<6&&x<11) {
+        if (Board.getMap(x+1,y) == 'T'||Board.getMap(x-1,y) == 'T'||Board.getMap(x,y+1) == 'T' ||Board.getMap(x,y-1) == 'T'||Board.getMap(x-1,y+1) == 'T'||Board.getMap(x-1,y-1) == 'T' ||Board.getMap(x+1,y-1) == 'T'||Board.getMap(x+1,y+1) == 'T') {	
+        	System.out.println(Board.getMap(x+1,y-1));
+                   s = s+"T";
+                }
+    	else if (Board.getMap(x+1,y) == 'Y'||Board.getMap(x-1,y) == 'Y'||Board.getMap(x,y+1) == 'Y' ||Board.getMap(x,y-1) == 'Y'||Board.getMap(x-1,y+1) == 'Y'||Board.getMap(x-1,y-1) == 'Y' ||Board.getMap(x+1,y-1) == 'Y'||Board.getMap(x+1,y+1) == 'Y') {	
+    		s = s+"Y";
+        }
+    	else if (Board.getMap(x+1,y) == 'U'||Board.getMap(x-1,y) == 'U'||Board.getMap(x,y+1) == 'U' ||Board.getMap(x,y-1) == 'U'||Board.getMap(x-1,y+1) == 'U'||Board.getMap(x-1,y-1) == 'U' ||Board.getMap(x+1,y-1) == 'U'||Board.getMap(x+1,y+1) == 'U') {	
+    		s = s+"U";
+        }
+    	else if (Board.getMap(x+1,y) == 'I'||Board.getMap(x-1,y) == 'I'||Board.getMap(x,y+1) == 'I' ||Board.getMap(x,y-1) == 'I'||Board.getMap(x-1,y+1) == 'I'||Board.getMap(x-1,y-1) == 'I' ||Board.getMap(x+1,y-1) == 'I'||Board.getMap(x+1,y+1) == 'I') {	
+    		s = s+"I";
+        }
+    	}
+        return s;
+    }
 
-        
     
 
 
